@@ -1,5 +1,6 @@
-package com.ksidelta.pg.model.flight;
+package com.ksidelta.pg.model.flight.prices;
 
+import com.ksidelta.pg.model.flight.price.FlightPrice;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

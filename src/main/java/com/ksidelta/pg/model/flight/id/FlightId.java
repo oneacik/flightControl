@@ -1,4 +1,4 @@
-package com.ksidelta.pg.model.flight;
+package com.ksidelta.pg.model.flight.id;
 
 import java.util.regex.Pattern;
 

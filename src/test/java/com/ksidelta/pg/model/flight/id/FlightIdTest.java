@@ -1,7 +1,7 @@
-package com.ksidelta.pg.model.flight;
+package com.ksidelta.pg.model.flight.id;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
+import com.ksidelta.pg.model.flight.id.FlightId;
+import com.ksidelta.pg.model.flight.id.InvalidFlightId;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 

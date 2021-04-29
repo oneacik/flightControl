@@ -1,4 +1,4 @@
-package com.ksidelta.pg.model.flight;
+package com.ksidelta.pg.model.flight.price;
 
 import java.math.BigDecimal;
 import java.time.Instant;

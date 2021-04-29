@@ -1,4 +1,6 @@
-package com.ksidelta.pg.model.flight;
+package com.ksidelta.pg.model.flight.prices;
+
+import com.ksidelta.pg.model.flight.price.FlightPrice;
 
 import java.time.Instant;
 import java.util.List;
@@ -52,7 +54,7 @@ public class FlightPrices {
 
     private static void assertNotOverlappingFlightPrices(List<FlightPrice> sortedFlightPrices) {
         sortedFlightPrices.stream().reduce((left, right) -> {
-            if (left.endOfAppliance.isAfter(right.startOfAppliance)) {
+            if (left.getEndOfAppliance().isAfter(right.getStartOfAppliance())) {
                 throw new OverlappingPeriodException();
             }
             return right;
@@ -61,7 +63,7 @@ public class FlightPrices {
 
     private static void assertNotDiscontinousFlightPrices(List<FlightPrice> sortedFlightPrices) {
         sortedFlightPrices.stream().reduce((left, right) -> {
-            if (left.endOfAppliance.isBefore(right.startOfAppliance)) {
+            if (left.getEndOfAppliance().isBefore(right.getStartOfAppliance())) {
                 throw new NonContinuousPeriodException();
             }
             return right;

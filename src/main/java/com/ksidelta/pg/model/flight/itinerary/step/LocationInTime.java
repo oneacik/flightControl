@@ -1,7 +1,6 @@
 package com.ksidelta.pg.model.flight.itinerary.step;
 
 import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
 
 public class LocationInTime {
     private final String country;

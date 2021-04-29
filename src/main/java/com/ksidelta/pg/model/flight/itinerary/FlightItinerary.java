@@ -20,6 +20,14 @@ public class FlightItinerary {
     }
 
     public static FlightItinerary createFlightItinerary(LocationInTime origin, LocationInTime destination) {
+        assertPositiveTimeDifference(origin, destination);
+
         return new FlightItinerary(origin, destination);
+    }
+
+    static void assertPositiveTimeDifference(LocationInTime origin, LocationInTime destination) {
+        if (destination.getOffsetDateTime().compareTo(origin.getOffsetDateTime()) <= 0) {
+            throw new TimeTravelException();
+        }
     }
 }

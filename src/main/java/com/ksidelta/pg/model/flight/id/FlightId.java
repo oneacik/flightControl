@@ -23,7 +23,7 @@ public class FlightId {
 
     public static void assertFlightIdPattern(String flightId) {
         if (!flightIdPattern.matcher(flightId).matches()) {
-            throw new InvalidFlightId();
+            throw new InvalidFlightIdException();
         }
     }
 }

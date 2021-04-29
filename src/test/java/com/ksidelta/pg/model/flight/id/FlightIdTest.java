@@ -1,7 +1,5 @@
 package com.ksidelta.pg.model.flight.id;
 
-import com.ksidelta.pg.model.flight.id.FlightId;
-import com.ksidelta.pg.model.flight.id.InvalidFlightId;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -21,7 +19,7 @@ public class FlightIdTest {
     @ParameterizedTest
     @ValueSource(strings = {"LM12345BSA","KLM1345BSA","KLM12345BA","KLM123A5BSA", "KLM12345BS4", "K7M12345BSA", })
     public void givenInvalidFlightIdWhenFlightIdIsCreatedThenInvalidFlightIdIsThrown(String flightId) {
-        assertThrows(InvalidFlightId.class, () -> FlightId.createFlightId(flightId));
+        assertThrows(InvalidFlightIdException.class, () -> FlightId.createFlightId(flightId));
     }
 
 }

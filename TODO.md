@@ -1,0 +1,2 @@
+- Create base class for different exceptions
+- Add not null checks!

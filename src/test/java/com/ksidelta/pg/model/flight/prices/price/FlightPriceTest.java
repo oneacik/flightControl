@@ -1,4 +1,4 @@
-package com.ksidelta.pg.model.flight.price;
+package com.ksidelta.pg.model.flight.prices.price;
 
 import org.junit.jupiter.api.Test;
 

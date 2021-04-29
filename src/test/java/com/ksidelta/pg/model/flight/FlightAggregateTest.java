@@ -11,7 +11,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
@@ -32,7 +31,7 @@ public class FlightAggregateTest {
 
     @ParameterizedTest
     @MethodSource("invalidFlightPricesInTime")
-    public void givenOverlappingItineraryTimesOnFlightTimesWhenFlightAggregateIsCreatedThenItThrowsInvalidPurchasePeriodException(FlightPrices flightPrices) {
+    public void givenOverlappingFlightPricesTimesOnFlightTimesWhenFlightAggregateIsCreatedThenItThrowsInvalidPurchasePeriodException(FlightPrices flightPrices) {
         Assertions.assertThrows(InvalidPurchasePeriodException.class, () -> FlightAggregate.createFlightAggregate(
                 createSampleFlightId(),
                 createSampleFlightItinerary(),

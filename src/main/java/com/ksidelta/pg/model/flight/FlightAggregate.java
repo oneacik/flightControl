@@ -25,6 +25,8 @@ public class FlightAggregate {
     }
 
     public void setFlightPrices(FlightPrices flightPrices) {
+        assertFlightPricesAreBeforeDepartureDate(flightItinerary, flightPrices);
+
         this.flightPrices = flightPrices;
     }
 
@@ -44,5 +46,11 @@ public class FlightAggregate {
         flightAggregate.setFlightPrices(flightPrices);
 
         return flightAggregate;
+    }
+
+    public void assertFlightPricesAreBeforeDepartureDate(FlightItinerary flightItinerary, FlightPrices flightPrices) {
+        if (flightItinerary.getOrigin().getOffsetDateTime().toInstant().compareTo(flightPrices.endOfBuyingPeriod()) < 0) {
+            throw new InvalidPurchasePeriodException();
+        }
     }
 }

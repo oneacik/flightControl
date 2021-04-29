@@ -1,8 +1,6 @@
 package com.ksidelta.pg.model.flight;
 
 import org.assertj.core.util.Lists;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -13,19 +11,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static java.math.BigDecimal.*;
+import static java.math.BigDecimal.ONE;
+import static java.math.BigDecimal.TEN;
 import static java.time.Instant.ofEpochSecond;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.isNotNull;
 
 public class FlightPricesCreationTest {
 
     @Test
     public void givenFlightPricePeriodsAreEmptyThenEmptyPeriodsExceptionIsThrown() {
-        assertThrows(EmptyPeriodsException.class, () -> FlightPrices.createFlightPrices(Lists.emptyList()));
+        assertThrows(EmptyFlightPricesException.class, () -> FlightPrices.createFlightPrices(Lists.emptyList()));
     }
 
     @ParameterizedTest
@@ -46,7 +45,7 @@ public class FlightPricesCreationTest {
     public void givenFlightPricePeriodsAreContinuousThenObjectIsCreated(List<FlightPrice> continuousFlightPrices) {
         final var flightPricesObject = FlightPrices.createFlightPrices(continuousFlightPrices);
 
-        assertThat(flightPricesObject, isNotNull());
+        assertThat(flightPricesObject, notNullValue());
     }
 
     @Test
@@ -80,7 +79,7 @@ public class FlightPricesCreationTest {
 
         final var currentPrice = flightPrices.priceForGivenTime(gotPriceCases.time);
 
-        assertThat(currentPrice, equalTo(gotPriceCases.price));
+        assertThat(currentPrice, equalTo(gotPriceCases.flightPrice));
     }
 
     public static List<List<FlightPrice>> overlappingFlightPrices() {
@@ -135,15 +134,15 @@ public class FlightPricesCreationTest {
                 new GotPriceCase(asList(
                         FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)),
                         FlightPrice.createFlightPrice(TEN, ofEpochSecond(2), ofEpochSecond(4))
-                ), ofEpochSecond(0), Optional.of(ONE)),
+                ), ofEpochSecond(0), Optional.of(FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)))),
                 new GotPriceCase(asList(
                         FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)),
                         FlightPrice.createFlightPrice(TEN, ofEpochSecond(2), ofEpochSecond(4))
-                ), ofEpochSecond(1), Optional.of(ONE)),
+                ), ofEpochSecond(1), Optional.of(FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)))),
                 new GotPriceCase(asList(
                         FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)),
                         FlightPrice.createFlightPrice(TEN, ofEpochSecond(2), ofEpochSecond(4))
-                ), ofEpochSecond(2), Optional.of(TEN)),
+                ), ofEpochSecond(2), Optional.of(FlightPrice.createFlightPrice(TEN, ofEpochSecond(2), ofEpochSecond(4)))),
 
                 new GotPriceCase(asList(
                         FlightPrice.createFlightPrice(ONE, ofEpochSecond(1), ofEpochSecond(2)),
@@ -164,12 +163,12 @@ public class FlightPricesCreationTest {
 class GotPriceCase {
     List<FlightPrice> flightPrices;
     Instant time;
-    Optional<BigDecimal> price;
+    Optional<FlightPrice> flightPrice;
 
-    public GotPriceCase(List<FlightPrice> flightPrices, Instant time, Optional<BigDecimal> price) {
+    public GotPriceCase(List<FlightPrice> flightPrices, Instant time, Optional<FlightPrice> flightPrice) {
         this.flightPrices = flightPrices;
         this.time = time;
-        this.price = price;
+        this.flightPrice = flightPrice;
     }
 
     public List<FlightPrice> getFlightPrices() {
@@ -180,7 +179,7 @@ class GotPriceCase {
         return time;
     }
 
-    public Optional<BigDecimal> getPrice() {
-        return price;
+    public Optional<FlightPrice> getFlightPrice() {
+        return flightPrice;
     }
 }

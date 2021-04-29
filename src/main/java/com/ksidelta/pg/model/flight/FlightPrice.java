@@ -2,6 +2,7 @@ package com.ksidelta.pg.model.flight;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Objects;
 
 public final class FlightPrice {
     BigDecimal price;
@@ -45,4 +46,16 @@ public final class FlightPrice {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FlightPrice that = (FlightPrice) o;
+        return Objects.equals(price, that.price) && Objects.equals(startOfAppliance, that.startOfAppliance) && Objects.equals(endOfAppliance, that.endOfAppliance);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(price, startOfAppliance, endOfAppliance);
+    }
 }

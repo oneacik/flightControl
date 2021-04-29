@@ -2,10 +2,8 @@ package com.ksidelta.pg.model.flight;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Currency;
-import java.util.Date;
 
-public class FlightPrice {
+public final class FlightPrice {
     BigDecimal price;
     Instant startOfAppliance;
     Instant endOfAppliance;
@@ -29,6 +27,22 @@ public class FlightPrice {
     }
 
     public static FlightPrice createFlightPrice(BigDecimal price, Instant startOfAppliance, Instant endOfAppliance) {
+        assertPositivePrice(price);
+        assertPositiveDuration(startOfAppliance, endOfAppliance);
+
         return new FlightPrice(price, startOfAppliance, endOfAppliance);
     }
+
+    private static void assertPositivePrice(BigDecimal price) {
+        if (price.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IncorrectPriceException();
+        }
+    }
+
+    private static void assertPositiveDuration(Instant startOfAppliance, Instant endOfAppliance) {
+        if (!endOfAppliance.isAfter(startOfAppliance)) {
+            throw new InvalidPeriodException();
+        }
+    }
+
 }

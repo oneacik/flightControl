@@ -14,12 +14,12 @@ public class FlightPriceCreationTest {
 
     @Test
     public void whenPriceIsZeroThenIncorrectPriceExceptionIsThrown() {
-        assertThrows(IncorrectPriceException.class, () -> FlightPrice.createFlightPrice(BigDecimal.ZERO, Instant.ofEpochSecond(0), Instant.ofEpochSecond(1)))
+        assertThrows(IncorrectPriceException.class, () -> FlightPrice.createFlightPrice(BigDecimal.ZERO, Instant.ofEpochSecond(0), Instant.ofEpochSecond(1)));
     }
 
     @Test
     public void whenPriceIsLessThanZeroThenIncorrectPriceExceptionIsThrown() {
-        assertThrows(IncorrectPriceException.class, () -> FlightPrice.createFlightPrice(BigDecimal.ONE.negate(), Instant.ofEpochSecond(0), Instant.ofEpochSecond(1)))
+        assertThrows(IncorrectPriceException.class, () -> FlightPrice.createFlightPrice(BigDecimal.ONE.negate(), Instant.ofEpochSecond(0), Instant.ofEpochSecond(1)));
     }
 
     @Test
@@ -34,10 +34,11 @@ public class FlightPriceCreationTest {
     public void whenDurationOfOfferIsLessThanZeroThenInvalidPeriodExceptionIsThrown() {
         assertThrows(
                 InvalidPeriodException.class,
-                () -> FlightPrice.createFlightPrice(BigDecimal.ONE, Instant.ofEpochSecond(0), Instant.ofEpochSecond(0))
+                () -> FlightPrice.createFlightPrice(BigDecimal.ONE, Instant.ofEpochSecond(1), Instant.ofEpochSecond(0))
         );
     }
 
+    @Test
     public void whenDurationIsGreaterThanZeroAndPriceIsGreaterThanZeroThenFlightPriceIsCreated(){
         final var flightPrice = FlightPrice.createFlightPrice(BigDecimal.ONE, Instant.ofEpochSecond(0), Instant.ofEpochSecond(1));
 

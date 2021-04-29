@@ -5,9 +5,9 @@ import java.util.regex.Pattern;
 public class FlightId {
     static Pattern flightIdPattern = Pattern.compile("[A-Z]{3}[\\d]{5}[A-Z]{3}");
 
-    String flightId;
+    private final String flightId;
 
-    FlightId(String flightId) {
+    private FlightId(String flightId) {
         this.flightId = flightId;
     }
 

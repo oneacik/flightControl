@@ -8,9 +8,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class FlightPrices {
-    List<FlightPrice> sortedByTimeFlightPrices;
+    private final List<FlightPrice> sortedByTimeFlightPrices;
 
-    FlightPrices(List<FlightPrice> sortedByTimeFlightPrices) {
+    private FlightPrices(List<FlightPrice> sortedByTimeFlightPrices) {
         this.sortedByTimeFlightPrices = sortedByTimeFlightPrices;
     }
 

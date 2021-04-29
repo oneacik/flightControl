@@ -5,11 +5,11 @@ import java.time.Instant;
 import java.util.Objects;
 
 public final class FlightPrice {
-    BigDecimal price;
-    Instant startOfAppliance;
-    Instant endOfAppliance;
+    private final BigDecimal price;
+    private final Instant startOfAppliance;
+    private final Instant endOfAppliance;
 
-    FlightPrice(BigDecimal price, Instant startOfAppliance, Instant endOfAppliance) {
+    private FlightPrice(BigDecimal price, Instant startOfAppliance, Instant endOfAppliance) {
         this.price = price;
         this.startOfAppliance = startOfAppliance;
         this.endOfAppliance = endOfAppliance;

@@ -18,15 +18,21 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.time.Instant.ofEpochSecond;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class FlightAggregateTest {
     @Test
     public void givenCorrectDataWhenFlightAggregateIsCreatedThenItSucceeds() {
-        FlightAggregate.createFlightAggregate(
+        final var flightAggregate = FlightAggregate.createFlightAggregate(
                 createSampleFlightId(),
                 createSampleFlightItinerary(),
                 createSampleFlightPrices()
         );
+
+        assertThat(flightAggregate.getFlightId(), equalTo(createSampleFlightId()));
+        assertThat(flightAggregate.getFlightItinerary(), equalTo(createSampleFlightItinerary()));
+        assertThat(flightAggregate.getFlightPrices(), equalTo(createSampleFlightPrices()));
     }
 
     @ParameterizedTest

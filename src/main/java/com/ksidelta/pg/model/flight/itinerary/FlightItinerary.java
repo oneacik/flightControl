@@ -2,6 +2,8 @@ package com.ksidelta.pg.model.flight.itinerary;
 
 import com.ksidelta.pg.model.flight.itinerary.step.LocationInTime;
 
+import java.util.Objects;
+
 public class FlightItinerary {
     LocationInTime origin;
     LocationInTime destination;
@@ -17,6 +19,19 @@ public class FlightItinerary {
 
     public LocationInTime getDestination() {
         return destination;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FlightItinerary that = (FlightItinerary) o;
+        return Objects.equals(origin, that.origin) && Objects.equals(destination, that.destination);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(origin, destination);
     }
 
     public static FlightItinerary createFlightItinerary(LocationInTime origin, LocationInTime destination) {

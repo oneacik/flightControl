@@ -4,6 +4,7 @@ import com.ksidelta.pg.model.flight.prices.price.FlightPrice;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,19 @@ public class FlightPrices {
                         flightPrice.getStartOfAppliance().compareTo(givenTime) <= 0
                                 && flightPrice.getEndOfAppliance().compareTo(givenTime) > 0
                 ).findFirst();
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FlightPrices that = (FlightPrices) o;
+        return Objects.equals(sortedByTimeFlightPrices, that.sortedByTimeFlightPrices);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sortedByTimeFlightPrices);
     }
 
     public static FlightPrices createFlightPrices(List<FlightPrice> flightPrices) {

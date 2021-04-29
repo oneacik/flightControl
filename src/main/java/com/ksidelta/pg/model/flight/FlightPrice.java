@@ -8,7 +8,7 @@ public final class FlightPrice {
     Instant startOfAppliance;
     Instant endOfAppliance;
 
-    protected FlightPrice(BigDecimal price, Instant startOfAppliance, Instant endOfAppliance) {
+    FlightPrice(BigDecimal price, Instant startOfAppliance, Instant endOfAppliance) {
         this.price = price;
         this.startOfAppliance = startOfAppliance;
         this.endOfAppliance = endOfAppliance;
@@ -35,13 +35,13 @@ public final class FlightPrice {
 
     private static void assertPositivePrice(BigDecimal price) {
         if (price.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IncorrectPriceException();
+            throw new NegativeOrZeroPriceException();
         }
     }
 
     private static void assertPositiveDuration(Instant startOfAppliance, Instant endOfAppliance) {
         if (!endOfAppliance.isAfter(startOfAppliance)) {
-            throw new InvalidPeriodException();
+            throw new NegativeOrZeroPeriodException();
         }
     }
 

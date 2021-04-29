@@ -1,6 +1,5 @@
 package com.ksidelta.pg.model.flight;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -13,27 +12,27 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class FlightPriceCreationTest {
 
     @Test
-    public void whenPriceIsZeroThenIncorrectPriceExceptionIsThrown() {
-        assertThrows(IncorrectPriceException.class, () -> FlightPrice.createFlightPrice(BigDecimal.ZERO, Instant.ofEpochSecond(0), Instant.ofEpochSecond(1)));
+    public void whenPriceIsZeroThenIncorrectNegativeOrZeroPriceExceptionIsThrown() {
+        assertThrows(NegativeOrZeroPriceException.class, () -> FlightPrice.createFlightPrice(BigDecimal.ZERO, Instant.ofEpochSecond(0), Instant.ofEpochSecond(1)));
     }
 
     @Test
-    public void whenPriceIsLessThanZeroThenIncorrectPriceExceptionIsThrown() {
-        assertThrows(IncorrectPriceException.class, () -> FlightPrice.createFlightPrice(BigDecimal.ONE.negate(), Instant.ofEpochSecond(0), Instant.ofEpochSecond(1)));
+    public void whenPriceIsLessThanZeroThenNegativeOrZeroPriceExceptionIsThrown() {
+        assertThrows(NegativeOrZeroPriceException.class, () -> FlightPrice.createFlightPrice(BigDecimal.ONE.negate(), Instant.ofEpochSecond(0), Instant.ofEpochSecond(1)));
     }
 
     @Test
-    public void whenDurationOfOfferIsZeroThenInvalidPeriodExceptionIsThrown() {
+    public void whenDurationOfOfferIsZeroThenNegativeOrZeroPeriodExceptionIsThrown() {
         assertThrows(
-                InvalidPeriodException.class,
+                NegativeOrZeroPeriodException.class,
                 () -> FlightPrice.createFlightPrice(BigDecimal.ONE, Instant.ofEpochSecond(0), Instant.ofEpochSecond(0))
         );
     }
 
     @Test
-    public void whenDurationOfOfferIsLessThanZeroThenInvalidPeriodExceptionIsThrown() {
+    public void whenDurationOfOfferIsLessThanZeroThenNegativeOrZeroPeriodExceptionIsThrown() {
         assertThrows(
-                InvalidPeriodException.class,
+                NegativeOrZeroPeriodException.class,
                 () -> FlightPrice.createFlightPrice(BigDecimal.ONE, Instant.ofEpochSecond(1), Instant.ofEpochSecond(0))
         );
     }

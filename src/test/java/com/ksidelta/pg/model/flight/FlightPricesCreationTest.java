@@ -1,0 +1,186 @@
+package com.ksidelta.pg.model.flight;
+
+import org.assertj.core.util.Lists;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static java.math.BigDecimal.*;
+import static java.time.Instant.ofEpochSecond;
+import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.isNotNull;
+
+public class FlightPricesCreationTest {
+
+    @Test
+    public void givenFlightPricePeriodsAreEmptyThenEmptyPeriodsExceptionIsThrown() {
+        assertThrows(EmptyPeriodsException.class, () -> FlightPrices.createFlightPrices(Lists.emptyList()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("overlappingFlightPrices")
+    public void givenFlightPricePeriodsAreOverlappingThenOverlappingPeriodExceptionIsThrown(List<FlightPrice> overlappingFlightPrices) {
+        assertThrows(OverlappingPeriodException.class, () -> FlightPrices.createFlightPrices(overlappingFlightPrices));
+    }
+
+    @ParameterizedTest
+    @MethodSource("discontinuousFlightPrices")
+    public void givenFlightPricePeriodsAreDiscontinuousThenOverlappingPeriodExceptionIsThrown(List<FlightPrice> discontinuousFlightPrices) {
+        assertThrows(NonContinuousPeriodException.class, () -> FlightPrices.createFlightPrices(discontinuousFlightPrices));
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("continuousFlightPrices")
+    public void givenFlightPricePeriodsAreContinuousThenObjectIsCreated(List<FlightPrice> continuousFlightPrices) {
+        final var flightPricesObject = FlightPrices.createFlightPrices(continuousFlightPrices);
+
+        assertThat(flightPricesObject, isNotNull());
+    }
+
+    @Test
+    public void whenBegginingOfBuyingPeriodIsGotThenLowestApplianceStartingDateIsReturned() {
+        final var flightPrices = FlightPrices.createFlightPrices(asList(
+                FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(1)),
+                FlightPrice.createFlightPrice(ONE, ofEpochSecond(1), ofEpochSecond(2))
+        ));
+
+        final var beginningOfBuyingPeriod = flightPrices.beginningOfBuyingPeriod();
+
+        assertThat(beginningOfBuyingPeriod, equalTo(ofEpochSecond(0)));
+    }
+
+    @Test
+    public void whenEndOfBuyingPeriodIsGotThenHighestApplianceEndingDateDateIsReturned() {
+        final var flightPrices = FlightPrices.createFlightPrices(asList(
+                FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(1)),
+                FlightPrice.createFlightPrice(ONE, ofEpochSecond(1), ofEpochSecond(2))
+        ));
+
+        final var endOfBuyingPeriod = flightPrices.endOfBuyingPeriod();
+
+        assertThat(endOfBuyingPeriod, equalTo(ofEpochSecond(2)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("gotPriceCases")
+    public void givenOverlappingTimeWhenPriceIsGotThenItMatchesFlightPrice(GotPriceCase gotPriceCases) {
+        final var flightPrices = FlightPrices.createFlightPrices(gotPriceCases.flightPrices);
+
+        final var currentPrice = flightPrices.priceForGivenTime(gotPriceCases.time);
+
+        assertThat(currentPrice, equalTo(gotPriceCases.price));
+    }
+
+    public static List<List<FlightPrice>> overlappingFlightPrices() {
+        return asList(
+                asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)),
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(1), ofEpochSecond(3))
+                ),
+                asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(1), ofEpochSecond(3)),
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2))
+                ),
+                asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)),
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(1), ofEpochSecond(2))
+                ),
+                asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)),
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(1))
+                )
+        );
+    }
+
+    public static List<List<FlightPrice>> discontinuousFlightPrices() {
+        return asList(
+                asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)),
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(3), ofEpochSecond(4))
+                ),
+                asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(3), ofEpochSecond(4)),
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2))
+                )
+        );
+    }
+
+    public static List<List<FlightPrice>> continuousFlightPrices() {
+        return asList(
+                asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(1)),
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(1), ofEpochSecond(2))
+                ),
+                asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(1), ofEpochSecond(2)),
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(1))
+                )
+        );
+    }
+
+    public static List<GotPriceCase> gotPriceCases() {
+        return Arrays.asList(
+                new GotPriceCase(asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)),
+                        FlightPrice.createFlightPrice(TEN, ofEpochSecond(2), ofEpochSecond(4))
+                ), ofEpochSecond(0), Optional.of(ONE)),
+                new GotPriceCase(asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)),
+                        FlightPrice.createFlightPrice(TEN, ofEpochSecond(2), ofEpochSecond(4))
+                ), ofEpochSecond(1), Optional.of(ONE)),
+                new GotPriceCase(asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)),
+                        FlightPrice.createFlightPrice(TEN, ofEpochSecond(2), ofEpochSecond(4))
+                ), ofEpochSecond(2), Optional.of(TEN)),
+
+                new GotPriceCase(asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(1), ofEpochSecond(2)),
+                        FlightPrice.createFlightPrice(TEN, ofEpochSecond(2), ofEpochSecond(3))
+                ), ofEpochSecond(0), Optional.empty()),
+                new GotPriceCase(asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)),
+                        FlightPrice.createFlightPrice(TEN, ofEpochSecond(2), ofEpochSecond(4))
+                ), ofEpochSecond(4), Optional.empty()),
+                new GotPriceCase(asList(
+                        FlightPrice.createFlightPrice(ONE, ofEpochSecond(0), ofEpochSecond(2)),
+                        FlightPrice.createFlightPrice(TEN, ofEpochSecond(2), ofEpochSecond(4))
+                ), ofEpochSecond(5), Optional.empty())
+        );
+    }
+}
+
+class GotPriceCase {
+    List<FlightPrice> flightPrices;
+    Instant time;
+    Optional<BigDecimal> price;
+
+    public GotPriceCase(List<FlightPrice> flightPrices, Instant time, Optional<BigDecimal> price) {
+        this.flightPrices = flightPrices;
+        this.time = time;
+        this.price = price;
+    }
+
+    public List<FlightPrice> getFlightPrices() {
+        return flightPrices;
+    }
+
+    public Instant getTime() {
+        return time;
+    }
+
+    public Optional<BigDecimal> getPrice() {
+        return price;
+    }
+}

@@ -21,7 +21,7 @@ public class FlightId {
         return new FlightId(flightId);
     }
 
-    public static void assertFlightIdPattern(String flightId) {
+    static void assertFlightIdPattern(String flightId) {
         if (!flightIdPattern.matcher(flightId).matches()) {
             throw new InvalidFlightIdException();
         }

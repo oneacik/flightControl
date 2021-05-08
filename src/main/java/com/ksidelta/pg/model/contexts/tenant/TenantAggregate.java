@@ -22,7 +22,7 @@ public class TenantAggregate {
         return personalInformation;
     }
 
-    public void setPersonalInformation(PersonalInformation personalInformation) {
+    public void updatePersonalInformation(PersonalInformation personalInformation) {
         this.personalInformation = personalInformation;
     }
 
@@ -30,7 +30,7 @@ public class TenantAggregate {
         return tenantCategory;
     }
 
-    public void setTenantCategory(TenantCategory tenantCategory) {
+    public void updateTenantCategory(TenantCategory tenantCategory) {
         this.tenantCategory = tenantCategory;
     }
 

@@ -19,7 +19,7 @@ public class FlightAggregate {
     }
 
     // TODO: Tests
-    public void setFlightPrices(FlightPrices flightPrices) {
+    public void updateFlightPrices(FlightPrices flightPrices) {
         assertFlightPricesAreBeforeDepartureDate(flightItinerary, flightPrices);
 
         this.flightPrices = flightPrices;
@@ -30,7 +30,7 @@ public class FlightAggregate {
     }
 
     // TODO: Tests
-    public void setFlightItinerary(FlightItinerary flightItinerary) {
+    public void updateFlightItinerary(FlightItinerary flightItinerary) {
         assertFlightPricesAreBeforeDepartureDate(flightItinerary, flightPrices);
 
         this.flightItinerary = flightItinerary;

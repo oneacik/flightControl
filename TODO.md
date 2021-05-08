@@ -1,2 +1,3 @@
 - Create base class for different exceptions
 - Add not null checks!
+- Africa is not a country, it is a continent, add a field to corresponding models

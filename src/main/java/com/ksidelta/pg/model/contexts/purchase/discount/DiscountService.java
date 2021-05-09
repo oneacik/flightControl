@@ -11,7 +11,7 @@ public class DiscountService {
 
     List<Discount> discounts;
 
-    public DiscountService(List<Discount> discounts) {
+    private DiscountService(List<Discount> discounts) {
         this.discounts = discounts;
     }
 
@@ -20,7 +20,7 @@ public class DiscountService {
 
         for (final var discount : discounts) {
             if (discount.isDiscountApplicable(discountDerivableInformation)) {
-                preDiscountStage = preDiscountStage.applyDiscount(discount);
+                currentDiscountStage = preDiscountStage.applyDiscount(discount);
             }
         }
 

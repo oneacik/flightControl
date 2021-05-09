@@ -41,7 +41,7 @@ public class FlightAggregate {
     }
 
     //NOTE: FlightId is assumed to be fed by user, however it may appear to be generated after talking with PM
-    public static FlightAggregate createFlightAggregate(FlightId flightId, FlightItinerary flightItinerary, FlightPrices flightPrices) {
+    public static FlightAggregate createNewFlight(FlightId flightId, FlightItinerary flightItinerary, FlightPrices flightPrices) {
         assertFlightPricesAreBeforeDepartureDate(flightItinerary, flightPrices);
 
         final var flightAggregate = new FlightAggregate();

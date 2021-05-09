@@ -34,7 +34,7 @@ public class TenantAggregate {
         this.tenantCategory = tenantCategory;
     }
 
-    public TenantAggregate createTenantAggregate(PersonalInformation personalInformation, TenantCategory tenantCategory) {
+    public TenantAggregate createNewTenant(PersonalInformation personalInformation, TenantCategory tenantCategory) {
         return new TenantAggregate(null, personalInformation, tenantCategory);
     }
 }

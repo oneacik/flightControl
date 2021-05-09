@@ -24,7 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class FlightAggregateTest {
     @Test
     public void givenCorrectDataWhenFlightAggregateIsCreatedThenItSucceeds() {
-        final var flightAggregate = FlightAggregate.createFlightAggregate(
+        final var flightAggregate = FlightAggregate.createNewFlight(
                 createSampleFlightId(),
                 createSampleFlightItinerary(),
                 createSampleFlightPrices()
@@ -38,7 +38,7 @@ public class FlightAggregateTest {
     @ParameterizedTest
     @MethodSource("invalidFlightPricesInTime")
     public void givenOverlappingFlightPricesTimesOnFlightTimesWhenFlightAggregateIsCreatedThenItThrowsInvalidPurchasePeriodException(FlightPrices flightPrices) {
-        Assertions.assertThrows(InvalidPurchasePeriodException.class, () -> FlightAggregate.createFlightAggregate(
+        Assertions.assertThrows(InvalidPurchasePeriodException.class, () -> FlightAggregate.createNewFlight(
                 createSampleFlightId(),
                 createSampleFlightItinerary(),
                 flightPrices
